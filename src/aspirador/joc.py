@@ -1,4 +1,8 @@
+import sys
+from xmlrpc.client import Boolean
+
 from iaLib import agent, joc
+import random
 
 class AspiradorRomput(Exception):
     def __init__(self):
@@ -11,8 +15,8 @@ class Aspirador(joc.JocNoGrafic):
         if agents is None:
             agents = []
         super(Aspirador, self).__init__(agents=agents)
-        self.habitacions=[True, True]
-        self.posicio_esquerra=True
+        self.habitacions=[Boolean(random.randint(0,1)), Boolean(random.randint(0,1))]
+        self.posicio_esquerra=Boolean(random.randint(0,1))
 
 
     def _draw(self):
@@ -34,11 +38,11 @@ class Aspirador(joc.JocNoGrafic):
 
     def percepcio(self):
         posicio=0 if self.posicio_esquerra else 1
-        return posicio, self.habitacions[posicio]
+        return {"Loc": posicio, "Brut": self.habitacions[posicio]}
 
     def _aplica(self, accio, params=None, agent_actual=None):
         if accio == "A":
-            self.habitacions[0 if self.posicio_esquerra else 1] = True
+            self.habitacions[0 if self.posicio_esquerra else 1] = False
         elif accio == "D":
             if not self.posicio_esquerra:
                 raise AspiradorRomput
@@ -48,7 +52,7 @@ class Aspirador(joc.JocNoGrafic):
                 raise AspiradorRomput
             self.posicio_esquerra = True
         elif accio == "S":
-            pass
+            sys.exit()
         else:
             raise Exception(f"Acció no existent en aquest joc: {accio}")
 

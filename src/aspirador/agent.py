@@ -38,24 +38,48 @@ class Aspirador(agent.Agent):
 
 class AspiradorTaula(Aspirador):
     TAULA = {
-        (0, True): "D",
-        (0, False): "A",
-        (1, True): "E",
-        (1, False): "A",
+        (0, True): "A",
+        (0, False): "D",
+        (1, True): "A",
+        (1, False): "E",
     }
 
     def actua(self, percepcio: dict):
         return AspiradorTaula.TAULA[
-            (percepcio["Loc"], percepcio["Net"])
+            (percepcio["Loc"], percepcio["Brut"])
         ]
 
 
 class AspiradorReflex(Aspirador):
     def actua(self, percepcio: dict):
-        """ TODO """
+        if percepcio["Brut"]:
+            return "A"
+        else:
+            if percepcio["Loc"] == 0:
+                return "D"
+            elif percepcio["Loc"]== 1:
+                return "E"
+
 
 
 class AspiradorMemoria(Aspirador):
+    def __init__(self):
+        super().__init__()
+        self.estat_habitacions = {0: None, 1: None}
     def actua(self, percepcio: dict):
-        """ TODO """
+        loc=percepcio["Loc"]
+        brut=percepcio["Brut"]
+        self.estat_habitacions[loc] = brut
+        if brut:
+            return "A"
+        # Determinar quina és l'altra habitació per consultar la memòria
+        estat_altra = self.estat_habitacions[1 if loc == 0 else 0]
+
+        # Decidir el moviment en funció de la informació addicional per saber quan aturar
+        if estat_altra is False:
+            return "S"
+        # Si l'altre no ha estat visitada, ens movem
+        elif estat_altra is None or estat_altra is True:
+            return "D" if loc == 0 else "E"
+
 
