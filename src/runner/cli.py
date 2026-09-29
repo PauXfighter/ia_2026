@@ -19,8 +19,18 @@ def run_module(module: str):
 
 @app.command()
 def aspirador():
-    """ Executa la tasca quiques"""
+    """ Executa la tasca aspirador"""
     run_module("aspirador")
+
+@app.command()
+def quiques():
+    """ Executa la tasca quiques"""
+    run_module("quiques")
+
+@app.command()
+def monedes():
+    """ Executa la tasca quiques"""
+    run_module("monedes")
 
 @app.command()
 def prova():

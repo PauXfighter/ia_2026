@@ -35,7 +35,7 @@ class Aspirador(joc.Joc):
             bool(random.randint(0, 1))
         ]  # True -> Net
 
-        self.__loc = bool(random.randint(0, 1))
+        self.__loc = random.randint(0, 1)
 
     def _aplica(self, accio, params=None, agent_actual=None) -> None:
         if accio == "A":
