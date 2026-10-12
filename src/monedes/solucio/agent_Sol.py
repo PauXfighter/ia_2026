@@ -1,5 +1,5 @@
 from queue import PriorityQueue
-from monedes.solucio.estat import Estat
+from monedes.solucio.estat_Sol import Estat
 
 from iaLib import agent
 

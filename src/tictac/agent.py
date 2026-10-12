@@ -6,7 +6,7 @@ Tic Tac Toe.
 Creat per: Miquel Miró Nicolau (UIB), 2024
 """
 from iaLib import agent
-from tictac.solucio.estat import Estat
+from tictac.estat import Estat
 
 
 
