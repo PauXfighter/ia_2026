@@ -16,15 +16,17 @@ class Estat:
         self.torn = torn_actual
 
     def es_meta(self) -> bool:
+        # S'ha acabat el joc si algú ha guanyat o si ja no queden caselles buides
+        return self.guanyador() is not None or len(self.accions_possibles) == 0
 
-        return self.hi_ha_guanyador() or len(self.accions_possibles) == 0
-
-    def hi_ha_guanyador(self):
-        for fila in range(self.mida):
-            for col in range(self.mida):
-                if self.taulell[fila][col] != " " and victoria(self.taulell, (fila, col)):
-                    return True
-        return False
+    def guanyador(self) -> str | None:
+        #R etorna X, 0 si algun d'ells ha guanyat, o None si ningú ha guanyat.
+        for i in range(len(self.taulell)):
+            for j in range(len(self.taulell[i])):
+                fitxa = self.taulell[i][j]
+                if fitxa in ("X", "0") and victoria(self.taulell, (i, j)):
+                    return fitxa
+        return None
 
     def transicio(self, acc):
         fila, col = acc
@@ -43,5 +45,53 @@ class Estat:
     def genera_fills(self):
         return [self.transicio(acc) for acc in self.accions_possibles]
 
-    def calc_heuristica(self):
-        pass
+    def calc_heuristica(self) -> int:
+        # Si ja hem acabat la partida, tornem el valor extrem
+        guanya = self.guanyador()
+        if guanya == "X":
+            return 100
+        elif guanya == "0":
+            return -100
+        elif len(self.accions_possibles) == 0:
+            return 0  # Empate
+
+        puntuacio_x = 0
+        puntuacio_0 = 0
+
+        for linia in self.__obtenir_linies():
+            # Cuenta cuántas fichas hay de cada tipo en la línea
+            nums_x = linia.count("X")
+            nums_0 = linia.count("0")
+
+            # Línea viable para X (no contiene ningún 0)
+            if nums_0 == 0:
+                if nums_x == 2:
+                    puntuacio_x += 10  # A punto de ganar
+                elif nums_x == 1:
+                    puntuacio_x += 1
+
+            # Línea viable para 0 (no contiene ninguna X)
+            if nums_x == 0:
+                if nums_0 == 2:
+                    puntuacio_0 += 10  # Rival a punto de ganar
+                elif nums_0 == 1:
+                    puntuacio_0 += 1
+
+        # Restamos las puntuaciones tal como marca la teoría
+        return puntuacio_x - puntuacio_0
+
+    def __obtenir_linies(self) -> list[list[str]]:
+        linies = []
+        # 3 files
+        for fila in self.taulell: linies.append(fila)
+
+        # 3 columnes
+        linies.append([self.taulell[f][c] for f in range(3) for c in range(3)])
+
+        # 2 diagonals
+        diagonal_principal = [self.taulell[i][i] for i in range(3)]
+        diagonal_secundaria = [self.taulell[i][2 - i] for i in range(3)]
+        linies.append(diagonal_principal)
+        linies.append(diagonal_secundaria)
+
+        return linies
