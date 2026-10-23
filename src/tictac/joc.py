@@ -73,7 +73,7 @@ class Taulell(joc.Joc):
                 caselles_col.append(Casella(tipus))
             self.__caselles.append(caselles_col)
 
-        self.agents_fitxes = {a.nom: f for a, f in zip(agents, ["0", "X"])}
+        self.agents_fitxes = {a.nom: f for a, f in zip(agents, ["X", "0"])}
 
         if not isinstance(agents, list):
             agents = [agents]
@@ -124,5 +124,5 @@ class Taulell(joc.Joc):
         return {
             "taulell": self.__taulell_str(),
             "mida": self.__mida_taulell,
-            "torn": ("0" if self.torn % 2 == 0 else "X"),
+            "torn": ("X" if self.torn % 2 == 0 else "0"),
         }
