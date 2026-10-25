@@ -36,6 +36,12 @@ def monedes():
 def tictac():
     """ Executa la tasca tic-tac-toe"""
     run_module("tictac")
+
+@app.command()
+def genetic():
+    """ Executa la tasca tic-tac-toe"""
+    run_module("genetic")
+
     
 @app.command()
 def prova():
