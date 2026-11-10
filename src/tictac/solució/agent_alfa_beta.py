@@ -6,7 +6,7 @@ Tic Tac Toe.
 Creat per: Miquel Miró Nicolau (UIB), 2025
 """
 from iaLib import agent
-from tictac.solucio.estat import Estat
+from tictac.solució.estat import Estat
 
 class Agent(agent.Agent):
     def __init__(self, poda = False):

@@ -22,7 +22,7 @@ class AgentMoneda(agent.Agent):
 
         self.__frontera.put((estat_inicial.calc_heuristica(), estat_inicial))
 
-        actual = None
+        actual = Estat
         while not self.__frontera.empty():
             _, actual = self.__frontera.get()
             if actual in self.__tancats:

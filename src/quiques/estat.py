@@ -4,7 +4,7 @@ import copy
 class Estat:
     MAX_ANIMALS = 3
 
-    accions = [(0, 1), (0, 2), (1, 0), (1, 1), (2, 0)] # Poll, Llop
+    accions = [(0, 0), (0, 2), (1, 0), (1, 1), (2, 0)] # Poll, Llop
 
     def __init__(self, local_barca: str, llops_esq: int, polls_esq: int, cami=None):
         if cami is None:
